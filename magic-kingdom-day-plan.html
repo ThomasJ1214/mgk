@@ -1,0 +1,843 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Magic Kingdom Day Plan</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;1,400&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --gold: #C9A84C;
+    --gold-light: #F0D080;
+    --midnight: #0A0F1E;
+    --navy: #111827;
+    --blue: #1E3A5F;
+    --sky: #4A90C4;
+    --pink: #E8748A;
+    --green: #4CAF82;
+    --purple: #7C5CBF;
+    --card: #161D2E;
+    --border: rgba(201,168,76,0.25);
+    --text: #E8EAF0;
+    --muted: #8B94A8;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    background: var(--midnight);
+    color: var(--text);
+    font-family: 'DM Sans', sans-serif;
+    min-height: 100vh;
+    overflow-x: hidden;
+  }
+
+  /* Starfield background */
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background:
+      radial-gradient(ellipse 80% 50% at 50% -10%, rgba(78,120,200,0.18) 0%, transparent 60%),
+      radial-gradient(ellipse 60% 40% at 80% 100%, rgba(232,116,138,0.1) 0%, transparent 50%);
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  .container {
+    max-width: 820px;
+    margin: 0 auto;
+    padding: 40px 20px 80px;
+    position: relative;
+    z-index: 1;
+  }
+
+  /* Header */
+  .header {
+    text-align: center;
+    margin-bottom: 48px;
+    animation: fadeDown 0.7s ease both;
+  }
+
+  .castle-icon {
+    font-size: 48px;
+    display: block;
+    margin-bottom: 12px;
+    filter: drop-shadow(0 0 20px rgba(201,168,76,0.5));
+  }
+
+  .header h1 {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(28px, 5vw, 42px);
+    font-weight: 700;
+    color: var(--gold-light);
+    letter-spacing: -0.5px;
+    line-height: 1.1;
+  }
+
+  .header p {
+    margin-top: 10px;
+    color: var(--muted);
+    font-size: 14px;
+    font-weight: 300;
+    letter-spacing: 0.05em;
+  }
+
+  .badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    background: linear-gradient(135deg, rgba(201,168,76,0.2), rgba(201,168,76,0.08));
+    border: 1px solid var(--border);
+    border-radius: 100px;
+    padding: 5px 14px;
+    font-size: 12px;
+    color: var(--gold);
+    font-weight: 500;
+    letter-spacing: 0.04em;
+    margin-top: 16px;
+  }
+
+  /* Alerts */
+  .alert {
+    background: rgba(201,168,76,0.07);
+    border: 1px solid rgba(201,168,76,0.3);
+    border-left: 3px solid var(--gold);
+    border-radius: 8px;
+    padding: 14px 18px;
+    font-size: 13px;
+    color: #C8CEDB;
+    margin-bottom: 12px;
+    line-height: 1.6;
+    animation: fadeUp 0.6s ease both;
+  }
+
+  .alert strong { color: var(--gold); }
+
+  /* Section labels */
+  .section-label {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin: 40px 0 20px;
+    animation: fadeUp 0.5s ease both;
+  }
+
+  .section-label .label-text {
+    font-family: 'Playfair Display', serif;
+    font-size: 18px;
+    font-style: italic;
+    color: var(--gold-light);
+    white-space: nowrap;
+  }
+
+  .section-label .label-line {
+    flex: 1;
+    height: 1px;
+    background: var(--border);
+  }
+
+  .section-label .label-time {
+    font-size: 12px;
+    color: var(--muted);
+    font-weight: 400;
+    white-space: nowrap;
+    background: var(--card);
+    padding: 3px 10px;
+    border-radius: 100px;
+    border: 1px solid rgba(255,255,255,0.06);
+  }
+
+  /* Timeline */
+  .timeline {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+  }
+
+  .timeline::before {
+    content: '';
+    position: absolute;
+    left: 28px;
+    top: 20px;
+    bottom: 20px;
+    width: 2px;
+    background: linear-gradient(to bottom, var(--gold) 0%, rgba(201,168,76,0.15) 100%);
+  }
+
+  /* Ride card */
+  .ride-card {
+    display: flex;
+    gap: 0;
+    align-items: flex-start;
+    padding-bottom: 8px;
+    animation: fadeUp 0.5s ease both;
+  }
+
+  .ride-node {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 58px;
+    flex-shrink: 0;
+    padding-top: 16px;
+  }
+
+  .ride-dot {
+    width: 16px;
+    height: 16px;
+    border-radius: 50%;
+    background: var(--midnight);
+    border: 2.5px solid var(--gold);
+    position: relative;
+    z-index: 1;
+    flex-shrink: 0;
+    transition: transform 0.2s;
+  }
+
+  .ride-card:hover .ride-dot {
+    transform: scale(1.3);
+  }
+
+  .ride-dot.standby { border-color: var(--sky); }
+  .ride-dot.special { border-color: var(--pink); background: rgba(232,116,138,0.15); }
+  .ride-dot.break   { border-color: var(--green); }
+  .ride-dot.show    { border-color: var(--purple); }
+
+  .ride-inner {
+    flex: 1;
+    background: var(--card);
+    border: 1px solid rgba(255,255,255,0.06);
+    border-radius: 12px;
+    padding: 14px 18px;
+    margin-bottom: 10px;
+    transition: border-color 0.2s, transform 0.2s;
+    cursor: default;
+  }
+
+  .ride-card:hover .ride-inner {
+    border-color: rgba(201,168,76,0.2);
+    transform: translateX(3px);
+  }
+
+  .ride-top {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    gap: 10px;
+  }
+
+  .ride-name {
+    font-size: 15px;
+    font-weight: 500;
+    color: #EDF0F7;
+    line-height: 1.3;
+  }
+
+  .ride-time {
+    font-size: 11px;
+    color: var(--muted);
+    font-weight: 300;
+    white-space: nowrap;
+    margin-top: 2px;
+  }
+
+  .ride-tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+    margin-top: 10px;
+  }
+
+  .tag {
+    font-size: 11px;
+    padding: 3px 9px;
+    border-radius: 100px;
+    font-weight: 500;
+    letter-spacing: 0.03em;
+  }
+
+  .tag-ll    { background: rgba(201,168,76,0.15); color: var(--gold); border: 1px solid rgba(201,168,76,0.3); }
+  .tag-sb    { background: rgba(74,144,196,0.15); color: var(--sky); border: 1px solid rgba(74,144,196,0.3); }
+  .tag-must  { background: rgba(232,116,138,0.15); color: var(--pink); border: 1px solid rgba(232,116,138,0.3); }
+  .tag-tip   { background: rgba(76,175,130,0.1); color: var(--green); border: 1px solid rgba(76,175,130,0.3); }
+  .tag-show  { background: rgba(124,92,191,0.15); color: #A990E8; border: 1px solid rgba(124,92,191,0.3); }
+  .tag-closed { background: rgba(255,100,100,0.1); color: #F47B7B; border: 1px solid rgba(255,100,100,0.3); }
+
+  .ride-note {
+    font-size: 12px;
+    color: var(--muted);
+    margin-top: 8px;
+    line-height: 1.5;
+    font-weight: 300;
+  }
+
+  /* Break cards */
+  .break-card {
+    background: rgba(76,175,130,0.06);
+    border-color: rgba(76,175,130,0.2);
+  }
+
+  .break-card .ride-name { color: var(--green); }
+
+  /* Summary bar */
+  .summary {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 12px;
+    margin-top: 48px;
+    animation: fadeUp 0.6s ease both;
+  }
+
+  .summary-item {
+    background: var(--card);
+    border: 1px solid rgba(255,255,255,0.06);
+    border-radius: 12px;
+    padding: 16px;
+    text-align: center;
+  }
+
+  .summary-num {
+    font-family: 'Playfair Display', serif;
+    font-size: 32px;
+    font-weight: 700;
+    color: var(--gold-light);
+    display: block;
+    line-height: 1;
+  }
+
+  .summary-label {
+    font-size: 11px;
+    color: var(--muted);
+    margin-top: 6px;
+    font-weight: 300;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+  }
+
+  /* Legend */
+  .legend {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px;
+    margin-bottom: 28px;
+    padding: 16px 18px;
+    background: var(--card);
+    border: 1px solid rgba(255,255,255,0.06);
+    border-radius: 12px;
+    animation: fadeUp 0.5s ease both;
+  }
+
+  .legend-item {
+    display: flex;
+    align-items: center;
+    gap: 7px;
+    font-size: 12px;
+    color: var(--muted);
+  }
+
+  .legend-dot {
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    flex-shrink: 0;
+  }
+
+  /* Animations */
+  @keyframes fadeDown {
+    from { opacity: 0; transform: translateY(-20px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(14px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+
+  /* Staggered delays */
+  .ride-card:nth-child(1)  { animation-delay: 0.05s; }
+  .ride-card:nth-child(2)  { animation-delay: 0.10s; }
+  .ride-card:nth-child(3)  { animation-delay: 0.15s; }
+  .ride-card:nth-child(4)  { animation-delay: 0.20s; }
+  .ride-card:nth-child(5)  { animation-delay: 0.25s; }
+  .ride-card:nth-child(6)  { animation-delay: 0.30s; }
+  .ride-card:nth-child(7)  { animation-delay: 0.35s; }
+  .ride-card:nth-child(8)  { animation-delay: 0.40s; }
+  .ride-card:nth-child(9)  { animation-delay: 0.45s; }
+  .ride-card:nth-child(10) { animation-delay: 0.50s; }
+  .ride-card:nth-child(11) { animation-delay: 0.55s; }
+  .ride-card:nth-child(12) { animation-delay: 0.60s; }
+  .ride-card:nth-child(13) { animation-delay: 0.65s; }
+  .ride-card:nth-child(14) { animation-delay: 0.70s; }
+  .ride-card:nth-child(15) { animation-delay: 0.75s; }
+  .ride-card:nth-child(16) { animation-delay: 0.80s; }
+  .ride-card:nth-child(17) { animation-delay: 0.85s; }
+  .ride-card:nth-child(18) { animation-delay: 0.90s; }
+  .ride-card:nth-child(19) { animation-delay: 0.95s; }
+</style>
+</head>
+<body>
+<div class="container">
+
+  <!-- Header -->
+  <div class="header">
+    <span class="castle-icon">🏰</span>
+    <h1>Magic Kingdom<br>Full Day Plan</h1>
+    <p>Lightning Lane Premier Pass · Optimized Order</p>
+    <span class="badge">⚡ Premier Pass Included</span>
+  </div>
+
+  <!-- Alerts -->
+  <div class="alert">
+    ⚠️ <strong>2026 Closures:</strong> Big Thunder Mountain is closed for refurbishment until early May 2026. Buzz Lightyear's Space Ranger Spin reopens April 8, 2026 — check availability on the day.
+  </div>
+  <div class="alert">
+    🎆 <strong>Evening Shows:</strong> Festival of Fantasy Parade runs at 3:00 PM. Happily Ever After fireworks typically fire at 9:00 PM. Adjust the end of your day around these.
+  </div>
+
+  <!-- Legend -->
+  <div class="legend">
+    <div class="legend-item"><div class="legend-dot" style="background:var(--gold);"></div> Use Premier Pass (LL)</div>
+    <div class="legend-item"><div class="legend-dot" style="background:var(--sky);"></div> Standby Only (no LL)</div>
+    <div class="legend-item"><div class="legend-dot" style="background:var(--pink);"></div> Must-Do Priority</div>
+    <div class="legend-item"><div class="legend-dot" style="background:var(--green);"></div> Break / Food</div>
+    <div class="legend-item"><div class="legend-dot" style="background:var(--purple);"></div> Show / Parade</div>
+  </div>
+
+  <!-- BLOCK 1: ROPE DROP -->
+  <div class="section-label">
+    <span class="label-text">Rope Drop</span>
+    <div class="label-line"></div>
+    <span class="label-time">8:30 – 10:00 AM</span>
+  </div>
+
+  <div class="timeline">
+
+    <div class="ride-card">
+      <div class="ride-node"><div class="ride-dot standby"></div></div>
+      <div class="ride-inner">
+        <div class="ride-top">
+          <div>
+            <div class="ride-name">Tomorrowland Speedway</div>
+            <div class="ride-time">~8:30 AM · ~15 min</div>
+          </div>
+        </div>
+        <div class="ride-tags">
+          <span class="tag tag-sb">Standby Only</span>
+          <span class="tag tag-tip">Hit First</span>
+        </div>
+        <div class="ride-note">No Lightning Lane exists — lines balloon to 40+ min by mid-morning. Get this done immediately at park open.</div>
+      </div>
+    </div>
+
+    <div class="ride-card">
+      <div class="ride-node"><div class="ride-dot standby"></div></div>
+      <div class="ride-inner">
+        <div class="ride-top">
+          <div>
+            <div class="ride-name">it's a small world</div>
+            <div class="ride-time">~9:00 AM · ~15 min</div>
+          </div>
+        </div>
+        <div class="ride-tags">
+          <span class="tag tag-sb">Standby Only</span>
+        </div>
+        <div class="ride-note">No LL. Fast boarding at rope drop. A classic — get it out of the way early while lines are short.</div>
+      </div>
+    </div>
+
+    <div class="ride-card">
+      <div class="ride-node"><div class="ride-dot special"></div></div>
+      <div class="ride-inner">
+        <div class="ride-top">
+          <div>
+            <div class="ride-name">TRON Lightcycle / Run</div>
+            <div class="ride-time">~9:20 AM · ~10 min ride</div>
+          </div>
+        </div>
+        <div class="ride-tags">
+          <span class="tag tag-ll">Premier Pass ✓</span>
+          <span class="tag tag-must">Must-Do</span>
+        </div>
+        <div class="ride-note">The park's hottest ride. Use your Premier Pass here early — standby waits reach 90–120 min by 10 AM.</div>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- BLOCK 2: MORNING -->
+  <div class="section-label">
+    <span class="label-text">Morning Blitz</span>
+    <div class="label-line"></div>
+    <span class="label-time">10:00 AM – 12:30 PM</span>
+  </div>
+
+  <div class="timeline">
+
+    <div class="ride-card">
+      <div class="ride-node"><div class="ride-dot special"></div></div>
+      <div class="ride-inner">
+        <div class="ride-top">
+          <div>
+            <div class="ride-name">Seven Dwarfs Mine Train</div>
+            <div class="ride-time">~10:00 AM · ~5 min ride</div>
+          </div>
+        </div>
+        <div class="ride-tags">
+          <span class="tag tag-ll">Premier Pass ✓</span>
+          <span class="tag tag-must">Must-Do</span>
+        </div>
+        <div class="ride-note">The most in-demand ride in the park — standby regularly hits 75–100 min. Your Premier Pass is the move here.</div>
+      </div>
+    </div>
+
+    <div class="ride-card">
+      <div class="ride-node"><div class="ride-dot"></div></div>
+      <div class="ride-inner">
+        <div class="ride-top">
+          <div>
+            <div class="ride-name">Space Mountain</div>
+            <div class="ride-time">~10:30 AM · ~3 min ride</div>
+          </div>
+        </div>
+        <div class="ride-tags">
+          <span class="tag tag-ll">Premier Pass ✓</span>
+        </div>
+        <div class="ride-note">Classic dark coaster. Use LL — standby lines build fast once the park fills up.</div>
+      </div>
+    </div>
+
+    <div class="ride-card">
+      <div class="ride-node"><div class="ride-dot"></div></div>
+      <div class="ride-inner">
+        <div class="ride-top">
+          <div>
+            <div class="ride-name">Peter Pan's Flight</div>
+            <div class="ride-time">~11:00 AM · ~3 min ride</div>
+          </div>
+        </div>
+        <div class="ride-tags">
+          <span class="tag tag-ll">Premier Pass ✓</span>
+          <span class="tag tag-must">Always Packed</span>
+        </div>
+        <div class="ride-note">Deceptively long standby (60–80 min). Short ride but beloved — Premier Pass makes this a breeze.</div>
+      </div>
+    </div>
+
+    <div class="ride-card">
+      <div class="ride-node"><div class="ride-dot"></div></div>
+      <div class="ride-inner">
+        <div class="ride-top">
+          <div>
+            <div class="ride-name">Tiana's Bayou Adventure</div>
+            <div class="ride-time">~11:30 AM · ~10 min ride</div>
+          </div>
+        </div>
+        <div class="ride-tags">
+          <span class="tag tag-ll">Premier Pass ✓</span>
+        </div>
+        <div class="ride-note">Formerly Splash Mountain — rethemed to Princess and the Frog. Great log flume with a big drop. Waits spike by noon.</div>
+      </div>
+    </div>
+
+    <div class="ride-card">
+      <div class="ride-node"><div class="ride-dot"></div></div>
+      <div class="ride-inner">
+        <div class="ride-top">
+          <div>
+            <div class="ride-name">Haunted Mansion</div>
+            <div class="ride-time">~12:00 PM · ~8 min ride</div>
+          </div>
+        </div>
+        <div class="ride-tags">
+          <span class="tag tag-ll">Premier Pass ✓</span>
+          <span class="tag tag-must">Fan Favorite</span>
+        </div>
+        <div class="ride-note">One of Disney's best dark rides — 999 haunted rooms. Standby can hit 50 min on a busy day.</div>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- BLOCK 3: LUNCH -->
+  <div class="section-label">
+    <span class="label-text">Midday Break</span>
+    <div class="label-line"></div>
+    <span class="label-time">12:30 – 1:30 PM</span>
+  </div>
+
+  <div class="timeline">
+    <div class="ride-card">
+      <div class="ride-node"><div class="ride-dot break"></div></div>
+      <div class="ride-inner break-card">
+        <div class="ride-top">
+          <div>
+            <div class="ride-name" style="color:var(--green)">🍽 Lunch + Rest</div>
+            <div class="ride-time">12:30 – 1:30 PM</div>
+          </div>
+        </div>
+        <div class="ride-note" style="color:#88B8A0">Best spots: Be Our Guest (Beast's castle, reservation recommended), Pecos Bill Café (quick service), or Friar's Nook for snacks. This is also prime time for shorter crowds on most rides.</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- BLOCK 4: AFTERNOON -->
+  <div class="section-label">
+    <span class="label-text">Afternoon Sweep</span>
+    <div class="label-line"></div>
+    <span class="label-time">1:30 – 3:00 PM</span>
+  </div>
+
+  <div class="timeline">
+
+    <div class="ride-card">
+      <div class="ride-node"><div class="ride-dot"></div></div>
+      <div class="ride-inner">
+        <div class="ride-top">
+          <div>
+            <div class="ride-name">Pirates of the Caribbean</div>
+            <div class="ride-time">~1:30 PM · ~9 min ride</div>
+          </div>
+        </div>
+        <div class="ride-tags">
+          <span class="tag tag-ll">Premier Pass ✓</span>
+        </div>
+        <div class="ride-note">Iconic boat ride through pirate battle scenes. Use LL — waits can stack up in the afternoon heat when people seek shade.</div>
+      </div>
+    </div>
+
+    <div class="ride-card">
+      <div class="ride-node"><div class="ride-dot standby"></div></div>
+      <div class="ride-inner">
+        <div class="ride-top">
+          <div>
+            <div class="ride-name">Walt Disney World Railroad</div>
+            <div class="ride-time">~2:00 PM · ~21 min loop</div>
+          </div>
+        </div>
+        <div class="ride-tags">
+          <span class="tag tag-sb">Standby Only</span>
+          <span class="tag tag-tip">Rest Your Feet</span>
+        </div>
+        <div class="ride-note">No LL, but waits are usually short. Great for resting your feet — the train loops the entire park.</div>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- BLOCK 5: PARADE -->
+  <div class="section-label">
+    <span class="label-text">Parade Time</span>
+    <div class="label-line"></div>
+    <span class="label-time">3:00 PM</span>
+  </div>
+
+  <div class="timeline">
+    <div class="ride-card">
+      <div class="ride-node"><div class="ride-dot show"></div></div>
+      <div class="ride-inner">
+        <div class="ride-top">
+          <div>
+            <div class="ride-name">🎺 Festival of Fantasy Parade</div>
+            <div class="ride-time">3:00 PM · ~12 min</div>
+          </div>
+        </div>
+        <div class="ride-tags">
+          <span class="tag tag-show">Parade</span>
+          <span class="tag tag-must">Don't Miss</span>
+        </div>
+        <div class="ride-note">Claim a spot on Main Street or near the Hub 20 min early. This is one of the best parades Disney runs — full floats, characters, music. Worth stopping for.</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- BLOCK 6: LATE AFTERNOON -->
+  <div class="section-label">
+    <span class="label-text">Late Afternoon</span>
+    <div class="label-line"></div>
+    <span class="label-time">3:30 – 6:30 PM</span>
+  </div>
+
+  <div class="timeline">
+
+    <div class="ride-card">
+      <div class="ride-node"><div class="ride-dot"></div></div>
+      <div class="ride-inner">
+        <div class="ride-top">
+          <div>
+            <div class="ride-name">The Many Adventures of Winnie the Pooh</div>
+            <div class="ride-time">~3:30 PM · ~4 min ride</div>
+          </div>
+        </div>
+        <div class="ride-tags">
+          <span class="tag tag-ll">Premier Pass ✓</span>
+        </div>
+        <div class="ride-note">Whimsical ride with surprisingly long waits. Use LL and knock it out.</div>
+      </div>
+    </div>
+
+    <div class="ride-card">
+      <div class="ride-node"><div class="ride-dot standby"></div></div>
+      <div class="ride-inner">
+        <div class="ride-top">
+          <div>
+            <div class="ride-name">Dumbo the Flying Elephant</div>
+            <div class="ride-time">~4:00 PM · ~2 min ride</div>
+          </div>
+        </div>
+        <div class="ride-tags">
+          <span class="tag tag-sb">Standby Only</span>
+        </div>
+        <div class="ride-note">No LL. Lines ease slightly in the late afternoon. Short wait, great views from above Fantasyland.</div>
+      </div>
+    </div>
+
+    <div class="ride-card">
+      <div class="ride-node"><div class="ride-dot"></div></div>
+      <div class="ride-inner">
+        <div class="ride-top">
+          <div>
+            <div class="ride-name">Monsters Inc. Laugh Floor</div>
+            <div class="ride-time">~4:30 PM · ~15 min show</div>
+          </div>
+        </div>
+        <div class="ride-tags">
+          <span class="tag tag-ll">Premier Pass ✓</span>
+          <span class="tag tag-show">Interactive Show</span>
+        </div>
+        <div class="ride-note">Crowd-interactive comedy show — surprisingly funny. Great for cooling off inside. Short wait with LL.</div>
+      </div>
+    </div>
+
+    <div class="ride-card">
+      <div class="ride-node"><div class="ride-dot standby"></div></div>
+      <div class="ride-inner">
+        <div class="ride-top">
+          <div>
+            <div class="ride-name">Mad Tea Party</div>
+            <div class="ride-time">~5:00 PM · ~2 min ride</div>
+          </div>
+        </div>
+        <div class="ride-tags">
+          <span class="tag tag-sb">Standby Only</span>
+        </div>
+        <div class="ride-note">Spinning teacups — no LL, but waits are typically 10–20 min. Good filler between bigger rides.</div>
+      </div>
+    </div>
+
+    <div class="ride-card">
+      <div class="ride-node"><div class="ride-dot standby"></div></div>
+      <div class="ride-inner">
+        <div class="ride-top">
+          <div>
+            <div class="ride-name">Carousel of Progress</div>
+            <div class="ride-time">~5:30 PM · ~22 min show</div>
+          </div>
+        </div>
+        <div class="ride-tags">
+          <span class="tag tag-sb">Standby Only</span>
+          <span class="tag tag-show">Classic Show</span>
+        </div>
+        <div class="ride-note">Rotating theater through decades of American life — never a wait, always air-conditioned. Perfect foot rest before the evening.</div>
+      </div>
+    </div>
+
+    <div class="ride-card">
+      <div class="ride-node"><div class="ride-dot standby"></div></div>
+      <div class="ride-inner">
+        <div class="ride-top">
+          <div>
+            <div class="ride-name">Magic Carpets of Aladdin</div>
+            <div class="ride-time">~6:00 PM · ~2 min ride</div>
+          </div>
+        </div>
+        <div class="ride-tags">
+          <span class="tag tag-sb">Standby Only</span>
+        </div>
+        <div class="ride-note">Quick Adventureland spinner — no LL. Short wait, easy to add in while passing through the area.</div>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- BLOCK 7: EVENING -->
+  <div class="section-label">
+    <span class="label-text">Evening Re-rides</span>
+    <div class="label-line"></div>
+    <span class="label-time">6:30 – 8:30 PM</span>
+  </div>
+
+  <div class="timeline">
+    <div class="ride-card">
+      <div class="ride-node"><div class="ride-dot"></div></div>
+      <div class="ride-inner">
+        <div class="ride-top">
+          <div>
+            <div class="ride-name">Re-ride Favorites</div>
+            <div class="ride-time">6:30 – 8:30 PM</div>
+          </div>
+        </div>
+        <div class="ride-note">Evening is a great time to catch anything you missed or re-ride TRON, Haunted Mansion, or Pirates. Many rides have their shortest standby waits of the day after 7 PM as crowds thin ahead of fireworks.</div>
+      </div>
+    </div>
+
+    <div class="ride-card">
+      <div class="ride-node"><div class="ride-dot break"></div></div>
+      <div class="ride-inner break-card">
+        <div class="ride-top">
+          <div>
+            <div class="ride-name" style="color:var(--green)">🍦 Dinner + Snacks</div>
+            <div class="ride-time">~7:00 PM</div>
+          </div>
+        </div>
+        <div class="ride-note" style="color:#88B8A0">Try the Dole Whip at Aloha Isle, the Grey Stuff at Be Our Guest, or a Mickey pretzel. Grab your spot for fireworks early.</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- BLOCK 8: FIREWORKS -->
+  <div class="section-label">
+    <span class="label-text">Grand Finale</span>
+    <div class="label-line"></div>
+    <span class="label-time">9:00 PM</span>
+  </div>
+
+  <div class="timeline">
+    <div class="ride-card">
+      <div class="ride-node"><div class="ride-dot show"></div></div>
+      <div class="ride-inner">
+        <div class="ride-top">
+          <div>
+            <div class="ride-name">✨ Happily Ever After Fireworks</div>
+            <div class="ride-time">9:00 PM · ~18 min show</div>
+          </div>
+        </div>
+        <div class="ride-tags">
+          <span class="tag tag-must">End the Night Here</span>
+          <span class="tag tag-show">Nighttime Spectacular</span>
+        </div>
+        <div class="ride-note">Claim a spot on Main Street USA or the Hub (center of the park) by 8:30 PM. One of the best fireworks shows in the world — the castle projection mapping alone is worth staying for.</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Summary Stats -->
+  <div class="summary">
+    <div class="summary-item">
+      <span class="summary-num">15+</span>
+      <div class="summary-label">Rides & Experiences</div>
+    </div>
+    <div class="summary-item">
+      <span class="summary-num">8</span>
+      <div class="summary-label">Premier Pass Used</div>
+    </div>
+    <div class="summary-item">
+      <span class="summary-num">~13h</span>
+      <div class="summary-label">Full Day Coverage</div>
+    </div>
+  </div>
+
+</div>
+</body>
+</html>
