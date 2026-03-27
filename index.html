@@ -375,6 +375,118 @@
   .ride-card:nth-child(17) { animation-delay: 0.85s; }
   .ride-card:nth-child(18) { animation-delay: 0.90s; }
   .ride-card:nth-child(19) { animation-delay: 0.95s; }
+
+  /* Land badges */
+  .land-badge {
+    display: inline-block;
+    font-size: 10px;
+    padding: 2px 8px;
+    border-radius: 100px;
+    background: rgba(255,255,255,0.05);
+    border: 1px solid rgba(255,255,255,0.1);
+    color: var(--muted);
+    font-weight: 400;
+    letter-spacing: 0.03em;
+    margin-top: 4px;
+  }
+
+  /* Checklist checkbox */
+  .ride-check {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    margin-top: 8px;
+    user-select: none;
+  }
+
+  .ride-check input[type="checkbox"] { display: none; }
+
+  .check-box {
+    width: 18px;
+    height: 18px;
+    border-radius: 4px;
+    border: 2px solid rgba(255,255,255,0.18);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: background 0.2s, border-color 0.2s;
+    background: transparent;
+    flex-shrink: 0;
+    font-size: 11px;
+    color: #fff;
+    font-weight: bold;
+  }
+
+  .ride-check input:checked + .check-box {
+    background: var(--green);
+    border-color: var(--green);
+  }
+
+  .ride-check input:checked + .check-box::after { content: '✓'; }
+
+  /* Done state */
+  .ride-card.done .ride-inner {
+    opacity: 0.45;
+  }
+
+  .ride-card.done .ride-name {
+    text-decoration: line-through;
+    color: var(--muted);
+  }
+
+  .ride-card.done .ride-dot {
+    background: var(--green) !important;
+    border-color: var(--green) !important;
+  }
+
+  /* Progress tracker */
+  .progress-wrap {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    justify-content: center;
+    margin-top: 14px;
+    animation: fadeDown 0.7s ease both;
+  }
+
+  .progress-label {
+    font-size: 12px;
+    color: var(--muted);
+    white-space: nowrap;
+    min-width: 80px;
+    text-align: right;
+  }
+
+  .progress-bar-track {
+    width: 160px;
+    height: 4px;
+    background: rgba(255,255,255,0.07);
+    border-radius: 100px;
+    overflow: hidden;
+  }
+
+  .progress-bar-fill {
+    height: 100%;
+    background: var(--gold);
+    border-radius: 100px;
+    width: 0%;
+    transition: width 0.35s ease;
+  }
+
+  .reset-btn {
+    font-size: 11px;
+    color: var(--muted);
+    background: transparent;
+    border: 1px solid rgba(255,255,255,0.1);
+    border-radius: 100px;
+    padding: 4px 12px;
+    cursor: pointer;
+    font-family: 'DM Sans', sans-serif;
+    transition: color 0.2s, border-color 0.2s;
+  }
+
+  .reset-btn:hover { color: var(--text); border-color: rgba(255,255,255,0.22); }
 </style>
 </head>
 <body>
@@ -386,6 +498,11 @@
     <h1>Magic Kingdom<br>Full Day Plan</h1>
     <p>Lightning Lane Premier Pass · Optimized Order</p>
     <span class="badge">⚡ Premier Pass Included</span>
+    <div class="progress-wrap">
+      <span class="progress-label" id="progress-label">0 / 21 done</span>
+      <div class="progress-bar-track"><div class="progress-bar-fill" id="progress-fill"></div></div>
+      <button class="reset-btn" id="reset-btn">Reset</button>
+    </div>
   </div>
 
   <!-- Alerts -->
@@ -414,13 +531,14 @@
 
   <div class="timeline">
 
-    <div class="ride-card">
-      <div class="ride-node"><div class="ride-dot standby"></div></div>
+    <div class="ride-card" data-id="1">
+      <div class="ride-node"><div class="ride-dot standby"></div><label class="ride-check"><input type="checkbox"><span class="check-box"></span></label></div>
       <div class="ride-inner">
         <div class="ride-top">
           <div>
             <div class="ride-name">Tomorrowland Speedway</div>
             <div class="ride-time">~8:30 AM · ~15 min</div>
+            <span class="land-badge">Tomorrowland</span>
           </div>
         </div>
         <div class="ride-tags">
@@ -431,13 +549,14 @@
       </div>
     </div>
 
-    <div class="ride-card">
-      <div class="ride-node"><div class="ride-dot standby"></div></div>
+    <div class="ride-card" data-id="2">
+      <div class="ride-node"><div class="ride-dot standby"></div><label class="ride-check"><input type="checkbox"><span class="check-box"></span></label></div>
       <div class="ride-inner">
         <div class="ride-top">
           <div>
             <div class="ride-name">it's a small world</div>
             <div class="ride-time">~9:00 AM · ~15 min</div>
+            <span class="land-badge">Fantasyland</span>
           </div>
         </div>
         <div class="ride-tags">
@@ -447,13 +566,14 @@
       </div>
     </div>
 
-    <div class="ride-card">
-      <div class="ride-node"><div class="ride-dot special"></div></div>
+    <div class="ride-card" data-id="3">
+      <div class="ride-node"><div class="ride-dot special"></div><label class="ride-check"><input type="checkbox"><span class="check-box"></span></label></div>
       <div class="ride-inner">
         <div class="ride-top">
           <div>
             <div class="ride-name">TRON Lightcycle / Run</div>
             <div class="ride-time">~9:20 AM · ~10 min ride</div>
+            <span class="land-badge">Tomorrowland</span>
           </div>
         </div>
         <div class="ride-tags">
@@ -475,13 +595,14 @@
 
   <div class="timeline">
 
-    <div class="ride-card">
-      <div class="ride-node"><div class="ride-dot special"></div></div>
+    <div class="ride-card" data-id="4">
+      <div class="ride-node"><div class="ride-dot special"></div><label class="ride-check"><input type="checkbox"><span class="check-box"></span></label></div>
       <div class="ride-inner">
         <div class="ride-top">
           <div>
             <div class="ride-name">Seven Dwarfs Mine Train</div>
             <div class="ride-time">~10:00 AM · ~5 min ride</div>
+            <span class="land-badge">Fantasyland</span>
           </div>
         </div>
         <div class="ride-tags">
@@ -492,13 +613,14 @@
       </div>
     </div>
 
-    <div class="ride-card">
-      <div class="ride-node"><div class="ride-dot"></div></div>
+    <div class="ride-card" data-id="5">
+      <div class="ride-node"><div class="ride-dot"></div><label class="ride-check"><input type="checkbox"><span class="check-box"></span></label></div>
       <div class="ride-inner">
         <div class="ride-top">
           <div>
             <div class="ride-name">Space Mountain</div>
             <div class="ride-time">~10:30 AM · ~3 min ride</div>
+            <span class="land-badge">Tomorrowland</span>
           </div>
         </div>
         <div class="ride-tags">
@@ -508,13 +630,14 @@
       </div>
     </div>
 
-    <div class="ride-card">
-      <div class="ride-node"><div class="ride-dot"></div></div>
+    <div class="ride-card" data-id="6">
+      <div class="ride-node"><div class="ride-dot"></div><label class="ride-check"><input type="checkbox"><span class="check-box"></span></label></div>
       <div class="ride-inner">
         <div class="ride-top">
           <div>
             <div class="ride-name">Peter Pan's Flight</div>
             <div class="ride-time">~11:00 AM · ~3 min ride</div>
+            <span class="land-badge">Fantasyland</span>
           </div>
         </div>
         <div class="ride-tags">
@@ -525,13 +648,14 @@
       </div>
     </div>
 
-    <div class="ride-card">
-      <div class="ride-node"><div class="ride-dot"></div></div>
+    <div class="ride-card" data-id="7">
+      <div class="ride-node"><div class="ride-dot"></div><label class="ride-check"><input type="checkbox"><span class="check-box"></span></label></div>
       <div class="ride-inner">
         <div class="ride-top">
           <div>
             <div class="ride-name">Tiana's Bayou Adventure</div>
             <div class="ride-time">~11:30 AM · ~10 min ride</div>
+            <span class="land-badge">Frontierland</span>
           </div>
         </div>
         <div class="ride-tags">
@@ -541,13 +665,14 @@
       </div>
     </div>
 
-    <div class="ride-card">
-      <div class="ride-node"><div class="ride-dot"></div></div>
+    <div class="ride-card" data-id="8">
+      <div class="ride-node"><div class="ride-dot"></div><label class="ride-check"><input type="checkbox"><span class="check-box"></span></label></div>
       <div class="ride-inner">
         <div class="ride-top">
           <div>
             <div class="ride-name">Haunted Mansion</div>
             <div class="ride-time">~12:00 PM · ~8 min ride</div>
+            <span class="land-badge">Liberty Square</span>
           </div>
         </div>
         <div class="ride-tags">
@@ -568,8 +693,8 @@
   </div>
 
   <div class="timeline">
-    <div class="ride-card">
-      <div class="ride-node"><div class="ride-dot break"></div></div>
+    <div class="ride-card" data-id="9">
+      <div class="ride-node"><div class="ride-dot break"></div><label class="ride-check"><input type="checkbox"><span class="check-box"></span></label></div>
       <div class="ride-inner break-card">
         <div class="ride-top">
           <div>
@@ -591,13 +716,14 @@
 
   <div class="timeline">
 
-    <div class="ride-card">
-      <div class="ride-node"><div class="ride-dot"></div></div>
+    <div class="ride-card" data-id="10">
+      <div class="ride-node"><div class="ride-dot"></div><label class="ride-check"><input type="checkbox"><span class="check-box"></span></label></div>
       <div class="ride-inner">
         <div class="ride-top">
           <div>
             <div class="ride-name">Pirates of the Caribbean</div>
             <div class="ride-time">~1:30 PM · ~9 min ride</div>
+            <span class="land-badge">Adventureland</span>
           </div>
         </div>
         <div class="ride-tags">
@@ -607,13 +733,14 @@
       </div>
     </div>
 
-    <div class="ride-card">
-      <div class="ride-node"><div class="ride-dot standby"></div></div>
+    <div class="ride-card" data-id="11">
+      <div class="ride-node"><div class="ride-dot standby"></div><label class="ride-check"><input type="checkbox"><span class="check-box"></span></label></div>
       <div class="ride-inner">
         <div class="ride-top">
           <div>
             <div class="ride-name">Walt Disney World Railroad</div>
             <div class="ride-time">~2:00 PM · ~21 min loop</div>
+            <span class="land-badge">Main Street USA</span>
           </div>
         </div>
         <div class="ride-tags">
@@ -634,13 +761,14 @@
   </div>
 
   <div class="timeline">
-    <div class="ride-card">
-      <div class="ride-node"><div class="ride-dot show"></div></div>
+    <div class="ride-card" data-id="12">
+      <div class="ride-node"><div class="ride-dot show"></div><label class="ride-check"><input type="checkbox"><span class="check-box"></span></label></div>
       <div class="ride-inner">
         <div class="ride-top">
           <div>
             <div class="ride-name">🎺 Festival of Fantasy Parade</div>
             <div class="ride-time">3:00 PM · ~12 min</div>
+            <span class="land-badge">Main Street USA</span>
           </div>
         </div>
         <div class="ride-tags">
@@ -661,13 +789,14 @@
 
   <div class="timeline">
 
-    <div class="ride-card">
-      <div class="ride-node"><div class="ride-dot"></div></div>
+    <div class="ride-card" data-id="13">
+      <div class="ride-node"><div class="ride-dot"></div><label class="ride-check"><input type="checkbox"><span class="check-box"></span></label></div>
       <div class="ride-inner">
         <div class="ride-top">
           <div>
             <div class="ride-name">The Many Adventures of Winnie the Pooh</div>
             <div class="ride-time">~3:30 PM · ~4 min ride</div>
+            <span class="land-badge">Fantasyland</span>
           </div>
         </div>
         <div class="ride-tags">
@@ -677,13 +806,14 @@
       </div>
     </div>
 
-    <div class="ride-card">
-      <div class="ride-node"><div class="ride-dot standby"></div></div>
+    <div class="ride-card" data-id="14">
+      <div class="ride-node"><div class="ride-dot standby"></div><label class="ride-check"><input type="checkbox"><span class="check-box"></span></label></div>
       <div class="ride-inner">
         <div class="ride-top">
           <div>
             <div class="ride-name">Dumbo the Flying Elephant</div>
             <div class="ride-time">~4:00 PM · ~2 min ride</div>
+            <span class="land-badge">Fantasyland</span>
           </div>
         </div>
         <div class="ride-tags">
@@ -693,13 +823,14 @@
       </div>
     </div>
 
-    <div class="ride-card">
-      <div class="ride-node"><div class="ride-dot"></div></div>
+    <div class="ride-card" data-id="15">
+      <div class="ride-node"><div class="ride-dot"></div><label class="ride-check"><input type="checkbox"><span class="check-box"></span></label></div>
       <div class="ride-inner">
         <div class="ride-top">
           <div>
             <div class="ride-name">Monsters Inc. Laugh Floor</div>
             <div class="ride-time">~4:30 PM · ~15 min show</div>
+            <span class="land-badge">Tomorrowland</span>
           </div>
         </div>
         <div class="ride-tags">
@@ -710,13 +841,14 @@
       </div>
     </div>
 
-    <div class="ride-card">
-      <div class="ride-node"><div class="ride-dot standby"></div></div>
+    <div class="ride-card" data-id="16">
+      <div class="ride-node"><div class="ride-dot standby"></div><label class="ride-check"><input type="checkbox"><span class="check-box"></span></label></div>
       <div class="ride-inner">
         <div class="ride-top">
           <div>
             <div class="ride-name">Mad Tea Party</div>
             <div class="ride-time">~5:00 PM · ~2 min ride</div>
+            <span class="land-badge">Fantasyland</span>
           </div>
         </div>
         <div class="ride-tags">
@@ -726,13 +858,14 @@
       </div>
     </div>
 
-    <div class="ride-card">
-      <div class="ride-node"><div class="ride-dot standby"></div></div>
+    <div class="ride-card" data-id="17">
+      <div class="ride-node"><div class="ride-dot standby"></div><label class="ride-check"><input type="checkbox"><span class="check-box"></span></label></div>
       <div class="ride-inner">
         <div class="ride-top">
           <div>
             <div class="ride-name">Carousel of Progress</div>
             <div class="ride-time">~5:30 PM · ~22 min show</div>
+            <span class="land-badge">Tomorrowland</span>
           </div>
         </div>
         <div class="ride-tags">
@@ -743,13 +876,14 @@
       </div>
     </div>
 
-    <div class="ride-card">
-      <div class="ride-node"><div class="ride-dot standby"></div></div>
+    <div class="ride-card" data-id="18">
+      <div class="ride-node"><div class="ride-dot standby"></div><label class="ride-check"><input type="checkbox"><span class="check-box"></span></label></div>
       <div class="ride-inner">
         <div class="ride-top">
           <div>
             <div class="ride-name">Magic Carpets of Aladdin</div>
             <div class="ride-time">~6:00 PM · ~2 min ride</div>
+            <span class="land-badge">Adventureland</span>
           </div>
         </div>
         <div class="ride-tags">
@@ -769,8 +903,8 @@
   </div>
 
   <div class="timeline">
-    <div class="ride-card">
-      <div class="ride-node"><div class="ride-dot"></div></div>
+    <div class="ride-card" data-id="19">
+      <div class="ride-node"><div class="ride-dot"></div><label class="ride-check"><input type="checkbox"><span class="check-box"></span></label></div>
       <div class="ride-inner">
         <div class="ride-top">
           <div>
@@ -782,8 +916,8 @@
       </div>
     </div>
 
-    <div class="ride-card">
-      <div class="ride-node"><div class="ride-dot break"></div></div>
+    <div class="ride-card" data-id="20">
+      <div class="ride-node"><div class="ride-dot break"></div><label class="ride-check"><input type="checkbox"><span class="check-box"></span></label></div>
       <div class="ride-inner break-card">
         <div class="ride-top">
           <div>
@@ -804,13 +938,14 @@
   </div>
 
   <div class="timeline">
-    <div class="ride-card">
-      <div class="ride-node"><div class="ride-dot show"></div></div>
+    <div class="ride-card" data-id="21">
+      <div class="ride-node"><div class="ride-dot show"></div><label class="ride-check"><input type="checkbox"><span class="check-box"></span></label></div>
       <div class="ride-inner">
         <div class="ride-top">
           <div>
             <div class="ride-name">✨ Happily Ever After Fireworks</div>
             <div class="ride-time">9:00 PM · ~18 min show</div>
+            <span class="land-badge">Main Street USA</span>
           </div>
         </div>
         <div class="ride-tags">
@@ -839,5 +974,57 @@
   </div>
 
 </div>
+<script>
+(function () {
+  var cards = document.querySelectorAll('.ride-card[data-id]');
+  var label = document.getElementById('progress-label');
+  var fill  = document.getElementById('progress-fill');
+  var total = cards.length;
+
+  function updateProgress() {
+    var done = document.querySelectorAll('.ride-card.done').length;
+    label.textContent = done + ' / ' + total + ' done';
+    fill.style.width = (total ? Math.round(done / total * 100) : 0) + '%';
+  }
+
+  cards.forEach(function (card) {
+    var id = card.dataset.id;
+    var cb = card.querySelector('input[type="checkbox"]');
+
+    if (localStorage.getItem('mk-' + id) === '1') {
+      card.classList.add('done');
+      cb.checked = true;
+    }
+
+    cb.addEventListener('change', function () {
+      if (cb.checked) {
+        card.classList.add('done');
+        localStorage.setItem('mk-' + id, '1');
+      } else {
+        card.classList.remove('done');
+        localStorage.removeItem('mk-' + id);
+      }
+      updateProgress();
+    });
+
+    card.querySelector('.ride-inner').addEventListener('click', function () {
+      cb.checked = !cb.checked;
+      cb.dispatchEvent(new Event('change'));
+    });
+  });
+
+  document.getElementById('reset-btn').addEventListener('click', function () {
+    cards.forEach(function (card) {
+      card.classList.remove('done');
+      var cb = card.querySelector('input[type="checkbox"]');
+      cb.checked = false;
+      localStorage.removeItem('mk-' + card.dataset.id);
+    });
+    updateProgress();
+  });
+
+  updateProgress();
+})();
+</script>
 </body>
 </html>
