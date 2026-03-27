@@ -376,46 +376,63 @@
   .ride-card:nth-child(18) { animation-delay: 0.90s; }
   .ride-card:nth-child(19) { animation-delay: 0.95s; }
 
-  /* Land badges */
+  /* Land badges — clickable links */
   .land-badge {
-    display: inline-block;
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
     font-size: 10px;
     padding: 2px 8px;
     border-radius: 100px;
     background: rgba(255,255,255,0.05);
-    border: 1px solid rgba(255,255,255,0.1);
-    color: var(--muted);
+    border: 1px solid rgba(255,255,255,0.12);
+    color: var(--sky);
     font-weight: 400;
     letter-spacing: 0.03em;
     margin-top: 4px;
+    text-decoration: none;
+    transition: background 0.2s, border-color 0.2s;
+    cursor: pointer;
   }
 
-  /* Checklist checkbox */
+  .land-badge:hover {
+    background: rgba(74,144,196,0.15);
+    border-color: rgba(74,144,196,0.4);
+    color: #7BBDE8;
+  }
+
+  /* Checklist checkbox — inside the card header */
+  .ride-inner { cursor: pointer; }
+
   .ride-check {
     display: flex;
     align-items: center;
-    justify-content: center;
+    gap: 6px;
     cursor: pointer;
-    margin-top: 8px;
     user-select: none;
+    flex-shrink: 0;
   }
 
   .ride-check input[type="checkbox"] { display: none; }
 
   .check-box {
-    width: 18px;
-    height: 18px;
-    border-radius: 4px;
-    border: 2px solid rgba(255,255,255,0.18);
+    width: 22px;
+    height: 22px;
+    border-radius: 6px;
+    border: 2px solid rgba(255,255,255,0.22);
     display: flex;
     align-items: center;
     justify-content: center;
     transition: background 0.2s, border-color 0.2s;
     background: transparent;
     flex-shrink: 0;
-    font-size: 11px;
+    font-size: 13px;
     color: #fff;
     font-weight: bold;
+  }
+
+  .ride-check:hover .check-box {
+    border-color: var(--green);
   }
 
   .ride-check input:checked + .check-box {
@@ -532,14 +549,15 @@
   <div class="timeline">
 
     <div class="ride-card" data-id="1">
-      <div class="ride-node"><div class="ride-dot standby"></div><label class="ride-check"><input type="checkbox"><span class="check-box"></span></label></div>
+      <div class="ride-node"><div class="ride-dot standby"></div></div>
       <div class="ride-inner">
         <div class="ride-top">
           <div>
             <div class="ride-name">Tomorrowland Speedway</div>
             <div class="ride-time">~8:30 AM · ~15 min</div>
-            <span class="land-badge">Tomorrowland</span>
+            <a class="land-badge" href="https://www.google.com/maps/search/Tomorrowland+Magic+Kingdom+Walt+Disney+World" target="_blank">📍 Tomorrowland</a>
           </div>
+          <label class="ride-check"><input type="checkbox"><span class="check-box"></span></label>
         </div>
         <div class="ride-tags">
           <span class="tag tag-sb">Standby Only</span>
@@ -550,14 +568,15 @@
     </div>
 
     <div class="ride-card" data-id="2">
-      <div class="ride-node"><div class="ride-dot standby"></div><label class="ride-check"><input type="checkbox"><span class="check-box"></span></label></div>
+      <div class="ride-node"><div class="ride-dot standby"></div></div>
       <div class="ride-inner">
         <div class="ride-top">
           <div>
             <div class="ride-name">it's a small world</div>
             <div class="ride-time">~9:00 AM · ~15 min</div>
-            <span class="land-badge">Fantasyland</span>
+            <a class="land-badge" href="https://www.google.com/maps/search/Fantasyland+Magic+Kingdom+Walt+Disney+World" target="_blank">📍 Fantasyland</a>
           </div>
+          <label class="ride-check"><input type="checkbox"><span class="check-box"></span></label>
         </div>
         <div class="ride-tags">
           <span class="tag tag-sb">Standby Only</span>
@@ -567,14 +586,15 @@
     </div>
 
     <div class="ride-card" data-id="3">
-      <div class="ride-node"><div class="ride-dot special"></div><label class="ride-check"><input type="checkbox"><span class="check-box"></span></label></div>
+      <div class="ride-node"><div class="ride-dot special"></div></div>
       <div class="ride-inner">
         <div class="ride-top">
           <div>
             <div class="ride-name">TRON Lightcycle / Run</div>
             <div class="ride-time">~9:20 AM · ~10 min ride</div>
-            <span class="land-badge">Tomorrowland</span>
+            <a class="land-badge" href="https://www.google.com/maps/search/Tomorrowland+Magic+Kingdom+Walt+Disney+World" target="_blank">📍 Tomorrowland</a>
           </div>
+          <label class="ride-check"><input type="checkbox"><span class="check-box"></span></label>
         </div>
         <div class="ride-tags">
           <span class="tag tag-ll">Premier Pass ✓</span>
@@ -596,14 +616,15 @@
   <div class="timeline">
 
     <div class="ride-card" data-id="4">
-      <div class="ride-node"><div class="ride-dot special"></div><label class="ride-check"><input type="checkbox"><span class="check-box"></span></label></div>
+      <div class="ride-node"><div class="ride-dot special"></div></div>
       <div class="ride-inner">
         <div class="ride-top">
           <div>
             <div class="ride-name">Seven Dwarfs Mine Train</div>
             <div class="ride-time">~10:00 AM · ~5 min ride</div>
-            <span class="land-badge">Fantasyland</span>
+            <a class="land-badge" href="https://www.google.com/maps/search/Fantasyland+Magic+Kingdom+Walt+Disney+World" target="_blank">📍 Fantasyland</a>
           </div>
+          <label class="ride-check"><input type="checkbox"><span class="check-box"></span></label>
         </div>
         <div class="ride-tags">
           <span class="tag tag-ll">Premier Pass ✓</span>
@@ -614,14 +635,15 @@
     </div>
 
     <div class="ride-card" data-id="5">
-      <div class="ride-node"><div class="ride-dot"></div><label class="ride-check"><input type="checkbox"><span class="check-box"></span></label></div>
+      <div class="ride-node"><div class="ride-dot"></div></div>
       <div class="ride-inner">
         <div class="ride-top">
           <div>
             <div class="ride-name">Space Mountain</div>
             <div class="ride-time">~10:30 AM · ~3 min ride</div>
-            <span class="land-badge">Tomorrowland</span>
+            <a class="land-badge" href="https://www.google.com/maps/search/Tomorrowland+Magic+Kingdom+Walt+Disney+World" target="_blank">📍 Tomorrowland</a>
           </div>
+          <label class="ride-check"><input type="checkbox"><span class="check-box"></span></label>
         </div>
         <div class="ride-tags">
           <span class="tag tag-ll">Premier Pass ✓</span>
@@ -631,14 +653,15 @@
     </div>
 
     <div class="ride-card" data-id="6">
-      <div class="ride-node"><div class="ride-dot"></div><label class="ride-check"><input type="checkbox"><span class="check-box"></span></label></div>
+      <div class="ride-node"><div class="ride-dot"></div></div>
       <div class="ride-inner">
         <div class="ride-top">
           <div>
             <div class="ride-name">Peter Pan's Flight</div>
             <div class="ride-time">~11:00 AM · ~3 min ride</div>
-            <span class="land-badge">Fantasyland</span>
+            <a class="land-badge" href="https://www.google.com/maps/search/Fantasyland+Magic+Kingdom+Walt+Disney+World" target="_blank">📍 Fantasyland</a>
           </div>
+          <label class="ride-check"><input type="checkbox"><span class="check-box"></span></label>
         </div>
         <div class="ride-tags">
           <span class="tag tag-ll">Premier Pass ✓</span>
@@ -649,14 +672,15 @@
     </div>
 
     <div class="ride-card" data-id="7">
-      <div class="ride-node"><div class="ride-dot"></div><label class="ride-check"><input type="checkbox"><span class="check-box"></span></label></div>
+      <div class="ride-node"><div class="ride-dot"></div></div>
       <div class="ride-inner">
         <div class="ride-top">
           <div>
             <div class="ride-name">Tiana's Bayou Adventure</div>
             <div class="ride-time">~11:30 AM · ~10 min ride</div>
-            <span class="land-badge">Frontierland</span>
+            <a class="land-badge" href="https://www.google.com/maps/search/Frontierland+Magic+Kingdom+Walt+Disney+World" target="_blank">📍 Frontierland</a>
           </div>
+          <label class="ride-check"><input type="checkbox"><span class="check-box"></span></label>
         </div>
         <div class="ride-tags">
           <span class="tag tag-ll">Premier Pass ✓</span>
@@ -666,14 +690,15 @@
     </div>
 
     <div class="ride-card" data-id="8">
-      <div class="ride-node"><div class="ride-dot"></div><label class="ride-check"><input type="checkbox"><span class="check-box"></span></label></div>
+      <div class="ride-node"><div class="ride-dot"></div></div>
       <div class="ride-inner">
         <div class="ride-top">
           <div>
             <div class="ride-name">Haunted Mansion</div>
             <div class="ride-time">~12:00 PM · ~8 min ride</div>
-            <span class="land-badge">Liberty Square</span>
+            <a class="land-badge" href="https://www.google.com/maps/search/Liberty+Square+Magic+Kingdom+Walt+Disney+World" target="_blank">📍 Liberty Square</a>
           </div>
+          <label class="ride-check"><input type="checkbox"><span class="check-box"></span></label>
         </div>
         <div class="ride-tags">
           <span class="tag tag-ll">Premier Pass ✓</span>
@@ -694,13 +719,14 @@
 
   <div class="timeline">
     <div class="ride-card" data-id="9">
-      <div class="ride-node"><div class="ride-dot break"></div><label class="ride-check"><input type="checkbox"><span class="check-box"></span></label></div>
+      <div class="ride-node"><div class="ride-dot break"></div></div>
       <div class="ride-inner break-card">
         <div class="ride-top">
           <div>
             <div class="ride-name" style="color:var(--green)">🍽 Lunch + Rest</div>
             <div class="ride-time">12:30 – 1:30 PM</div>
           </div>
+          <label class="ride-check"><input type="checkbox"><span class="check-box"></span></label>
         </div>
         <div class="ride-note" style="color:#88B8A0">Best spots: Be Our Guest (Beast's castle, reservation recommended), Pecos Bill Café (quick service), or Friar's Nook for snacks. This is also prime time for shorter crowds on most rides.</div>
       </div>
@@ -717,14 +743,15 @@
   <div class="timeline">
 
     <div class="ride-card" data-id="10">
-      <div class="ride-node"><div class="ride-dot"></div><label class="ride-check"><input type="checkbox"><span class="check-box"></span></label></div>
+      <div class="ride-node"><div class="ride-dot"></div></div>
       <div class="ride-inner">
         <div class="ride-top">
           <div>
             <div class="ride-name">Pirates of the Caribbean</div>
             <div class="ride-time">~1:30 PM · ~9 min ride</div>
-            <span class="land-badge">Adventureland</span>
+            <a class="land-badge" href="https://www.google.com/maps/search/Adventureland+Magic+Kingdom+Walt+Disney+World" target="_blank">📍 Adventureland</a>
           </div>
+          <label class="ride-check"><input type="checkbox"><span class="check-box"></span></label>
         </div>
         <div class="ride-tags">
           <span class="tag tag-ll">Premier Pass ✓</span>
@@ -734,14 +761,15 @@
     </div>
 
     <div class="ride-card" data-id="11">
-      <div class="ride-node"><div class="ride-dot standby"></div><label class="ride-check"><input type="checkbox"><span class="check-box"></span></label></div>
+      <div class="ride-node"><div class="ride-dot standby"></div></div>
       <div class="ride-inner">
         <div class="ride-top">
           <div>
             <div class="ride-name">Walt Disney World Railroad</div>
             <div class="ride-time">~2:00 PM · ~21 min loop</div>
-            <span class="land-badge">Main Street USA</span>
+            <a class="land-badge" href="https://www.google.com/maps/search/Main+Street+USA+Magic+Kingdom+Walt+Disney+World" target="_blank">📍 Main Street USA</a>
           </div>
+          <label class="ride-check"><input type="checkbox"><span class="check-box"></span></label>
         </div>
         <div class="ride-tags">
           <span class="tag tag-sb">Standby Only</span>
@@ -762,14 +790,15 @@
 
   <div class="timeline">
     <div class="ride-card" data-id="12">
-      <div class="ride-node"><div class="ride-dot show"></div><label class="ride-check"><input type="checkbox"><span class="check-box"></span></label></div>
+      <div class="ride-node"><div class="ride-dot show"></div></div>
       <div class="ride-inner">
         <div class="ride-top">
           <div>
             <div class="ride-name">🎺 Festival of Fantasy Parade</div>
             <div class="ride-time">3:00 PM · ~12 min</div>
-            <span class="land-badge">Main Street USA</span>
+            <a class="land-badge" href="https://www.google.com/maps/search/Main+Street+USA+Magic+Kingdom+Walt+Disney+World" target="_blank">📍 Main Street USA</a>
           </div>
+          <label class="ride-check"><input type="checkbox"><span class="check-box"></span></label>
         </div>
         <div class="ride-tags">
           <span class="tag tag-show">Parade</span>
@@ -790,14 +819,15 @@
   <div class="timeline">
 
     <div class="ride-card" data-id="13">
-      <div class="ride-node"><div class="ride-dot"></div><label class="ride-check"><input type="checkbox"><span class="check-box"></span></label></div>
+      <div class="ride-node"><div class="ride-dot"></div></div>
       <div class="ride-inner">
         <div class="ride-top">
           <div>
             <div class="ride-name">The Many Adventures of Winnie the Pooh</div>
             <div class="ride-time">~3:30 PM · ~4 min ride</div>
-            <span class="land-badge">Fantasyland</span>
+            <a class="land-badge" href="https://www.google.com/maps/search/Fantasyland+Magic+Kingdom+Walt+Disney+World" target="_blank">📍 Fantasyland</a>
           </div>
+          <label class="ride-check"><input type="checkbox"><span class="check-box"></span></label>
         </div>
         <div class="ride-tags">
           <span class="tag tag-ll">Premier Pass ✓</span>
@@ -807,14 +837,15 @@
     </div>
 
     <div class="ride-card" data-id="14">
-      <div class="ride-node"><div class="ride-dot standby"></div><label class="ride-check"><input type="checkbox"><span class="check-box"></span></label></div>
+      <div class="ride-node"><div class="ride-dot standby"></div></div>
       <div class="ride-inner">
         <div class="ride-top">
           <div>
             <div class="ride-name">Dumbo the Flying Elephant</div>
             <div class="ride-time">~4:00 PM · ~2 min ride</div>
-            <span class="land-badge">Fantasyland</span>
+            <a class="land-badge" href="https://www.google.com/maps/search/Fantasyland+Magic+Kingdom+Walt+Disney+World" target="_blank">📍 Fantasyland</a>
           </div>
+          <label class="ride-check"><input type="checkbox"><span class="check-box"></span></label>
         </div>
         <div class="ride-tags">
           <span class="tag tag-sb">Standby Only</span>
@@ -824,14 +855,15 @@
     </div>
 
     <div class="ride-card" data-id="15">
-      <div class="ride-node"><div class="ride-dot"></div><label class="ride-check"><input type="checkbox"><span class="check-box"></span></label></div>
+      <div class="ride-node"><div class="ride-dot"></div></div>
       <div class="ride-inner">
         <div class="ride-top">
           <div>
             <div class="ride-name">Monsters Inc. Laugh Floor</div>
             <div class="ride-time">~4:30 PM · ~15 min show</div>
-            <span class="land-badge">Tomorrowland</span>
+            <a class="land-badge" href="https://www.google.com/maps/search/Tomorrowland+Magic+Kingdom+Walt+Disney+World" target="_blank">📍 Tomorrowland</a>
           </div>
+          <label class="ride-check"><input type="checkbox"><span class="check-box"></span></label>
         </div>
         <div class="ride-tags">
           <span class="tag tag-ll">Premier Pass ✓</span>
@@ -842,14 +874,15 @@
     </div>
 
     <div class="ride-card" data-id="16">
-      <div class="ride-node"><div class="ride-dot standby"></div><label class="ride-check"><input type="checkbox"><span class="check-box"></span></label></div>
+      <div class="ride-node"><div class="ride-dot standby"></div></div>
       <div class="ride-inner">
         <div class="ride-top">
           <div>
             <div class="ride-name">Mad Tea Party</div>
             <div class="ride-time">~5:00 PM · ~2 min ride</div>
-            <span class="land-badge">Fantasyland</span>
+            <a class="land-badge" href="https://www.google.com/maps/search/Fantasyland+Magic+Kingdom+Walt+Disney+World" target="_blank">📍 Fantasyland</a>
           </div>
+          <label class="ride-check"><input type="checkbox"><span class="check-box"></span></label>
         </div>
         <div class="ride-tags">
           <span class="tag tag-sb">Standby Only</span>
@@ -859,14 +892,15 @@
     </div>
 
     <div class="ride-card" data-id="17">
-      <div class="ride-node"><div class="ride-dot standby"></div><label class="ride-check"><input type="checkbox"><span class="check-box"></span></label></div>
+      <div class="ride-node"><div class="ride-dot standby"></div></div>
       <div class="ride-inner">
         <div class="ride-top">
           <div>
             <div class="ride-name">Carousel of Progress</div>
             <div class="ride-time">~5:30 PM · ~22 min show</div>
-            <span class="land-badge">Tomorrowland</span>
+            <a class="land-badge" href="https://www.google.com/maps/search/Tomorrowland+Magic+Kingdom+Walt+Disney+World" target="_blank">📍 Tomorrowland</a>
           </div>
+          <label class="ride-check"><input type="checkbox"><span class="check-box"></span></label>
         </div>
         <div class="ride-tags">
           <span class="tag tag-sb">Standby Only</span>
@@ -877,14 +911,15 @@
     </div>
 
     <div class="ride-card" data-id="18">
-      <div class="ride-node"><div class="ride-dot standby"></div><label class="ride-check"><input type="checkbox"><span class="check-box"></span></label></div>
+      <div class="ride-node"><div class="ride-dot standby"></div></div>
       <div class="ride-inner">
         <div class="ride-top">
           <div>
             <div class="ride-name">Magic Carpets of Aladdin</div>
             <div class="ride-time">~6:00 PM · ~2 min ride</div>
-            <span class="land-badge">Adventureland</span>
+            <a class="land-badge" href="https://www.google.com/maps/search/Adventureland+Magic+Kingdom+Walt+Disney+World" target="_blank">📍 Adventureland</a>
           </div>
+          <label class="ride-check"><input type="checkbox"><span class="check-box"></span></label>
         </div>
         <div class="ride-tags">
           <span class="tag tag-sb">Standby Only</span>
@@ -904,26 +939,28 @@
 
   <div class="timeline">
     <div class="ride-card" data-id="19">
-      <div class="ride-node"><div class="ride-dot"></div><label class="ride-check"><input type="checkbox"><span class="check-box"></span></label></div>
+      <div class="ride-node"><div class="ride-dot"></div></div>
       <div class="ride-inner">
         <div class="ride-top">
           <div>
             <div class="ride-name">Re-ride Favorites</div>
             <div class="ride-time">6:30 – 8:30 PM</div>
           </div>
+          <label class="ride-check"><input type="checkbox"><span class="check-box"></span></label>
         </div>
         <div class="ride-note">Evening is a great time to catch anything you missed or re-ride TRON, Haunted Mansion, or Pirates. Many rides have their shortest standby waits of the day after 7 PM as crowds thin ahead of fireworks.</div>
       </div>
     </div>
 
     <div class="ride-card" data-id="20">
-      <div class="ride-node"><div class="ride-dot break"></div><label class="ride-check"><input type="checkbox"><span class="check-box"></span></label></div>
+      <div class="ride-node"><div class="ride-dot break"></div></div>
       <div class="ride-inner break-card">
         <div class="ride-top">
           <div>
             <div class="ride-name" style="color:var(--green)">🍦 Dinner + Snacks</div>
             <div class="ride-time">~7:00 PM</div>
           </div>
+          <label class="ride-check"><input type="checkbox"><span class="check-box"></span></label>
         </div>
         <div class="ride-note" style="color:#88B8A0">Try the Dole Whip at Aloha Isle, the Grey Stuff at Be Our Guest, or a Mickey pretzel. Grab your spot for fireworks early.</div>
       </div>
@@ -939,14 +976,15 @@
 
   <div class="timeline">
     <div class="ride-card" data-id="21">
-      <div class="ride-node"><div class="ride-dot show"></div><label class="ride-check"><input type="checkbox"><span class="check-box"></span></label></div>
+      <div class="ride-node"><div class="ride-dot show"></div></div>
       <div class="ride-inner">
         <div class="ride-top">
           <div>
             <div class="ride-name">✨ Happily Ever After Fireworks</div>
             <div class="ride-time">9:00 PM · ~18 min show</div>
-            <span class="land-badge">Main Street USA</span>
+            <a class="land-badge" href="https://www.google.com/maps/search/Main+Street+USA+Magic+Kingdom+Walt+Disney+World" target="_blank">📍 Main Street USA</a>
           </div>
+          <label class="ride-check"><input type="checkbox"><span class="check-box"></span></label>
         </div>
         <div class="ride-tags">
           <span class="tag tag-must">End the Night Here</span>
@@ -1007,7 +1045,8 @@
       updateProgress();
     });
 
-    card.querySelector('.ride-inner').addEventListener('click', function () {
+    card.querySelector('.ride-inner').addEventListener('click', function (e) {
+      if (e.target.closest('.ride-check') || e.target.closest('.land-badge')) return;
       cb.checked = !cb.checked;
       cb.dispatchEvent(new Event('change'));
     });
